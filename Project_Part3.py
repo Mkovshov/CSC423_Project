@@ -3,7 +3,6 @@ import pandas as pd
 
 def main():
     print("SUPERMAIDS CLEANING COMPANY - DATABASE IMPLEMENTATION")
-    print("=" * 60)
     
     # PART 3a: CREATE DATABASE SCHEMA 
     
@@ -165,7 +164,22 @@ def main():
     cursor.executemany('INSERT INTO Requirement_Equipment VALUES (?, ?, ?)', req_equipment)
     
     db_connect.commit()
-    print("Sample data inserted")
+
+    #SHOW TABLES BEFORE TRANSACTIONS
+    print("\n" + "=" * 60)
+    print("DATABASE STATE BEFORE TRANSACTIONS")
+    print("=" * 60)
+    
+    tables = ['Client', 'Employee', 'Service_Requirement', 
+              'Equipment', 'Assignment', 'Requirement_Equipment']
+    
+    for table in tables:
+        print(f"\n{table}:")
+        cursor.execute(f"SELECT * FROM {table}")
+        column_names = [row[0] for row in cursor.description]
+        table_data = cursor.fetchall()
+        df = pd.DataFrame(table_data, columns=column_names)
+        print(df.to_string(index=False))
     
     #  PART 3c: 5 SQL QUERIES 
     
